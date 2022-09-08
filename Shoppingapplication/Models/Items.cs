@@ -3,11 +3,12 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Shoppingapplication.Models
 {
-    [Serializable, BsonIgnoreExtraElements]
+    //[Serializable, BsonIgnoreExtraElements]
     public class Items
     {
-        [BsonId] //, BsonElement("_id"), BsonRepresentation(BsonType.ObjectId)]
-        public String ItemId { get; set; }
+        [BsonId] //, BsonElement("_id")]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public String ? Id { get; set; }
 
       
         public string Itemname { get; set; }

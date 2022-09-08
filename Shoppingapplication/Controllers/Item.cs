@@ -10,9 +10,10 @@ namespace Shoppingapplication.Controllers
     public class Item : ControllerBase
     {
         private readonly IMongoCollection<Items> _items;
+        
         public Item()
         {
-            var dbHost = "localhost";
+            var dbHost = "host.docker.internal";
             var dbName = "item_order";
             var connectionString = $"mongodb://{dbHost}:27017/{dbName}";
             var mongoUrl = MongoUrl.Create(connectionString);
@@ -32,7 +33,7 @@ namespace Shoppingapplication.Controllers
 
         public async Task<ActionResult<Items>> GetById(string itemId)
         {
-            var filterDefinition = Builders<Items>.Filter.Eq( x => x.ItemId, itemId);
+            var filterDefinition = Builders<Items>.Filter.Eq( x => x.Id, itemId);
             return await _items.Find(filterDefinition).SingleOrDefaultAsync();
 
         }
@@ -42,7 +43,7 @@ namespace Shoppingapplication.Controllers
         public async Task<ActionResult> Create(Items items)
         {
             await _items.InsertOneAsync(items);
-            return Ok();
+            return Ok(items);
         }
 
 
@@ -51,15 +52,15 @@ namespace Shoppingapplication.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(Items items)
         {
-            var filterDefinition = Builders<Items>.Filter.Eq(x => x.ItemId, items.ItemId);
+            var filterDefinition = Builders<Items>.Filter.Eq(x => x.Id, items.Id);
             await _items.ReplaceOneAsync(filterDefinition, items);
-            return Ok();
+            return Ok(items);
         }
 
         [HttpDelete("{ItemId}")]
         public async Task<ActionResult> Delete(string itemId)
         {
-            var filterDefinition = Builders<Items>.Filter.Eq(x => x.ItemId, itemId);
+            var filterDefinition = Builders<Items>.Filter.Eq(x => x.Id, itemId);
             await _items.DeleteOneAsync(filterDefinition);
             return Ok();
         }
