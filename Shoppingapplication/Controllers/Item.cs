@@ -12,7 +12,7 @@ namespace Shoppingapplication.Controllers
         private readonly IMongoCollection<Items> _items;
         public Item()
         {
-            var dbHost = "host.docker.internal";
+            var dbHost = "localhost";
             var dbName = "item_order";
             var connectionString = $"mongodb://{dbHost}:27017/{dbName}";
             var mongoUrl = MongoUrl.Create(connectionString);
